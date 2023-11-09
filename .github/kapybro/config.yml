@@ -1,0 +1,97 @@
+settings:
+
+maintainers: # Will be used for assignment, find the usages lower
+  teams: [ "maintainers" ]
+  users: [ "haarolean" ]
+
+triage:
+  enabled: true
+
+  label: "status/triage" # Define triage status label to be operated by the app
+  remove-assignees: true # Remove all the assignees present upon issue creation
+
+  skip: # skip an automated triage process based on configured conditions
+    enabled: true
+    remove-triage-labels: false
+    do-manual-triage: true # request a manual triage if an automated one has been skipped
+    labels:
+      add: [ "status/triage/skipped" ]
+      remove: [ ]
+    conditions:
+      labels: [ "needs-attention", "needs-discussion" ] # skip triage if at least one of the labels is present
+      authors: # OR an issue/pr has been opened by someone defined
+        teams: [ "maintainers" ]
+        users: [ "farnsworth", "zoidberg" ]
+    comment:
+      enabled: true
+      message: "Automated triaging skipped."
+
+  manual: # schedule a human maintainer triaging after an automated one
+    enabled: true
+    label: "status/triage/manual" # Required for issue state determination
+    labels:
+      add: []
+      remove: []
+    assign-maintainers: true # Assign one maintainer from maintainer list upon manual triage
+    comment:
+      enabled: true
+      message: "Automated triaging completed. Pending human maintainer 🤖"
+
+  repeating: # do an automatic triage again based on configured events (like adding a triage label again)
+    enabled: true
+    trigger-by-triage-labels: true # do a re-triage upon defined known triaging labels
+    only-manual: true # skip right to the manual triaging stage upon repeated triaging
+    conditions:
+      labels: [ "status/re-triage" ] # additional labels to consider
+
+  completed: # actions to do upon completing automated triaging
+    labels:
+      add: [ "status/triage/completed" ]
+      remove: [ "needs-attention" ]
+
+keyword-labeling: # We'll assign labels based on the issue/pr template rules elements' id's you've defined
+  enabled: true
+  case-sensitive: false
+  match-title: true
+  match-body: true
+  rules:
+    # <keyword>: <label>
+    - backend: scope/backend
+    - be: scope/backend
+    - frontend: scope/frontend
+    - infra: scope/infrastructure
+    - bug: type/bug
+    - feature: type/feature
+
+feedback-management:
+  enabled: true
+  labels:
+    requested: "status/feedback-requested"
+    received: "status/feedback-received"
+  only-author-replies: true
+  assign-author: true
+  assign-maintainers: true # Assign one maintainer from maintainer list upon receiving feedback
+  comments:
+    requested: "Further user feedback is requested. Please reply within 7 days or we might close the issue."
+    received: "Thanks for the additional feedback! We'll get back to your issue soon."
+    closed: "No feedback received within 7 days. Auto closing."
+  auto-close:
+    enabled: true # Auto close issue/PR if no feedback has been provided within specified time period.
+    close-days: 7
+    labels:
+      add: [ "status/stale" ]
+      remove: [ "status/feedback-requested" ]
+
+locking:
+  enabled: true
+  lock-on-close: true
+  lock-on-label: true
+  labels: [ "status/too-heated" ]
+  comment:
+    enabled: true
+    message: "Thanks for the interest in this issue. Please, raise a new one or open up a discussion!"
+
+auto-rebase: # Enable auto rebasing PRs which have "auto merge" on. We'll check branch protection settings as well.
+  enabled: true
+  rebase-on-label: true # rebase only PRs with any of the labels specified below
+  labels: [ "status/auto-merge" ]
