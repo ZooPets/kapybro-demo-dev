@@ -12,7 +12,6 @@ triage:
 
   skip: # skip an automated triage process based on configured conditions
     enabled: true
-    remove-triage-labels: false
     do-manual-triage: true # request a manual triage if an automated one has been skipped
     labels:
       add: [ "status/triage/skipped" ]
@@ -39,10 +38,11 @@ triage:
 
   repeating: # do an automatic triage again based on configured events (like adding a triage label again)
     enabled: true
-    trigger-by-triage-labels: true # do a re-triage upon defined known triaging labels
+    triggers:
+      reopen: false # do a re-triage upon issue/PR reopening
+      triage-labels: false # do a re-triage upon defined known triaging labels
+      labels: [ "status/retriage" ]
     only-manual: true # skip right to the manual triaging stage upon repeated triaging
-    conditions:
-      labels: [ "status/re-triage" ] # additional labels to consider
 
   completed: # actions to do upon completing automated triaging
     labels:
