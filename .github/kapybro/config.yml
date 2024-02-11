@@ -3,7 +3,7 @@ version: "0.2"
 settings:
 
 
-maintainers:
+maintainers: &maintainers
   teams: [ "maintainers" ]
   users: [ ]
 
@@ -12,8 +12,7 @@ anchors:
   skip_maintainers: &skip_maintainers
     enabled: true
     conditions:
-      authors:
-        maintainers: true
+      authors: *maintainers
 
   keyword-labeling: &keyword-labeling
     enabled: true
