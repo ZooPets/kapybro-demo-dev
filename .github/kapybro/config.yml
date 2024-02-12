@@ -9,6 +9,9 @@ maintainers: &maintainers
 
 anchors:
 
+  skip_main: &skip_off
+    enabled: false
+
   skip_maintainers: &skip_maintainers
     enabled: true
     conditions:
@@ -44,7 +47,7 @@ anchors:
 
   automatic: &automatic
     enabled: true
-    skip: *skip_maintainers
+    skip: *skip_off
     label: "status/triage"
     remove-assignees: false
     keyword-labeling: *keyword-labeling
