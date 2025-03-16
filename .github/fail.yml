@@ -1,0 +1,15 @@
+name: Always Fail
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  fail_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Intentionally fail
+        run: exit 1

@@ -24,7 +24,7 @@ anchors:
       title: true
       body: false
     rules:
-      # <alias>: [ <labels> ]
+      # <alias>: [ <labels> ] test
       acl: [ "area/acl" ]
       audit: [ "area/audit" ]
       auth: [ "area/auth" ]
@@ -109,7 +109,7 @@ prs:
   locking: *locking
 
   auto-rebase:
-    enabled: false
+    enabled: true
 
 comments:
   feedback:
